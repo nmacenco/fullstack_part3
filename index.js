@@ -1,4 +1,6 @@
 const express = require("express");
+const morgan = require("morgan");
+const generateId = require("./utils");
 const app = express();
 
 let persons = [
@@ -24,20 +26,18 @@ let persons = [
   },
 ];
 
-// Middleware
-
-/**
- * Generates a unique 16-digit ID using Math.random()
- * @returns {string} A 16-digit unique ID
- */
-function generateId() {
-  // Generate a large random number (16 digits)
-  // Using Math.random() * 10^16 to get a number between 0 and 10^16
-  // Then converting to string and padding with zeros if needed
-  return (Math.random() * Math.pow(10, 16)).toString().padStart(16, "0");
-}
+// Middlewares
 
 app.use(express.json());
+
+morgan.token("body", (req) => {
+  return JSON.stringify(req.body);
+});
+app.use(
+  morgan(
+    ":method :url :status :res[content-length] - :response-time ms - body: :body"
+  )
+);
 
 app.get("/api/persons", (request, response) => {
   response.json(persons);
