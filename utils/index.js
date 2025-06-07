@@ -8,3 +8,5 @@ function generateId() {
   // Then converting to string and padding with zeros if needed
   return (Math.random() * Math.pow(10, 16)).toString().padStart(16, "0");
 }
+
+module.exports = generateId;

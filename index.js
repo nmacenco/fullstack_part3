@@ -1,6 +1,7 @@
 const express = require("express");
 const morgan = require("morgan");
-const generateId = require("./utils");
+const generateId = require("./utils/index");
+const cors = require("cors");
 const app = express();
 
 let persons = [
@@ -38,6 +39,8 @@ app.use(
     ":method :url :status :res[content-length] - :response-time ms - body: :body"
   )
 );
+
+app.use(cors());
 
 app.get("/api/persons", (request, response) => {
   response.json(persons);
